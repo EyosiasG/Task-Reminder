@@ -8,12 +8,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="50dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Task Name"
-            android:textSize="16dp"
+            android:text="TASK NAME"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_margin="10dp"/>
@@ -27,20 +28,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date"
-            android:textSize="16dp"
+            android:text="CATEGORY"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_margin="10dp"/>
-        <Button
-            android:id="@+id/datePickerDialog"
-            android:layout_width="200dp"
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="500px"
             android:layout_height="wrap_content"
-            android:text="Jan 31, 2020"
-            android:textSize="16dp"
-            android:textColor="@color/black"
-            style="?android:spinnerStyle"
-            android:padding="10dp"/>
+            android:layout_margin="10dp"/>
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,47 +51,59 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Starting Time"
-                    android:textSize="16dp"
+                    android:text="DATE"
+                    android:textSize="18dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:layout_margin="10dp"/>
                 <Button
-                    android:id="@+id/startTimeBtn"
+                    android:id="@+id/datePickerDialog"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="00:00PM"
+                    android:text="Jan 31, 2020"
                     android:textSize="16dp"
                     android:textColor="@color/black"
                     style="?android:spinnerStyle"
                     android:padding="10dp"/>
-
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ending Time"
-                    android:textSize="16dp"
+                    android:text="TIME"
+                    android:textSize="18dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:layout_margin="10dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/startTimeBtn"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        style="?android:spinnerStyle"
+                        android:padding="10dp"/>
+                    <Spinner
+                        android:id="@+id/am_pm_spinner"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        />
 
-                <Button
-                    android:id="@+id/endTimeBtn"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="00:00PM"
-                    android:textSize="16dp"
-                    android:textColor="@color/black"
-                    style="?android:spinnerStyle"
-                    android:padding="10dp"/>
+                </LinearLayout>
+
+
             </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
         android:layout_width="match_parent"
@@ -103,9 +116,9 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:text="DISMISS"
-            android:textSize="16dp"
+            android:textSize="18dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/teal_200"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
             android:layout_margin="30dp"/>
@@ -115,8 +128,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CREATE"
-            android:textSize="16dp"
+            android:textSize="18dp"
             android:textStyle="bold"
+            android:backgroundTint="@color/teal_200"
             android:textColor="@color/white"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"

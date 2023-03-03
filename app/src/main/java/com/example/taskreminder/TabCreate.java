@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -67,9 +69,9 @@ public class TabCreate extends Fragment {
     }
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
-    private Button startTimeButton, endTimeButton;
+    private Button startTimeButton;
     private DBHelper db;
-    private   String name, date, startTime, endTime;
+    private   String name, date,category, startTime;
     int hour, minute;
 
     @Override
@@ -82,7 +84,23 @@ public class TabCreate extends Fragment {
 
         dateButton = root.findViewById(R.id.datePickerDialog);
         startTimeButton = root.findViewById(R.id.startTimeBtn);
-        endTimeButton = root.findViewById(R.id.endTimeBtn);
+
+        Spinner spinner = root.findViewById(R.id.spinner);
+        Spinner am_pm_Button = root.findViewById(R.id.am_pm_spinner);
+
+        String[] categoryList = {"Select Category","School", "Work", "Sports", "Family"};
+        String[] am_pm_List = {"AM", "PM"};
+
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(
+                getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,categoryList
+        );
+        ArrayAdapter<String> am_pm_Adapter = new ArrayAdapter<String>(
+                getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,am_pm_List
+        );
+
+
+        spinner.setAdapter(monthAdapter);
+        am_pm_Button.setAdapter(am_pm_Adapter);
 
 
 
@@ -113,27 +131,6 @@ public class TabCreate extends Fragment {
             }
         });
 
-        endTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        hour = selectedHour;
-                        minute = selectedMinute;
-                        endTimeButton.setText(String.format(Locale.getDefault(),"%02d:%02d",hour, minute));
-
-                    }
-                };
-                int style = AlertDialog.THEME_HOLO_DARK;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), style, onTimeSetListener, hour, minute, true);
-
-                timePickerDialog.setTitle("Select Time");
-                timePickerDialog.show();
-
-            }
-        });
-
 
         EditText editTextName = root.findViewById(R.id.nameEditText);
         Button buttonCreate = root.findViewById(R.id.createTaskBtn);
@@ -141,15 +138,16 @@ public class TabCreate extends Fragment {
             @Override
             public void onClick(View v) {
                 name = editTextName.getText().toString();
+                category = spinner.getSelectedItem().toString();
                 date = dateButton.getText().toString();
-                startTime = startTimeButton.getText().toString();
-                endTime = endTimeButton.getText().toString();
+                startTime = startTimeButton.getText().toString() +  " " + am_pm_Button.getSelectedItem().toString();
 
-                if(name.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty())
+
+                if(name.isEmpty() || date.isEmpty() || startTime.isEmpty())
                     Toast.makeText(getContext(), "Cannot Submit Empty Fields!", Toast.LENGTH_SHORT).show();
                 else{
                     try{
-                        boolean checkUserData = db.insertUserData(name, date, startTime);
+                        boolean checkUserData = db.insertUserData(name, category,date, startTime);
                         if(checkUserData == true){
                             Toast.makeText(getContext(), "New Entry Inserted", Toast.LENGTH_SHORT).show();
                         }
@@ -196,7 +194,7 @@ public class TabCreate extends Fragment {
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
         datePickerDialog = new DatePickerDialog(getContext(), style, dateSetListener, year, month, day);
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
     }
 
     private String makeDateString(int day, int month, int year) {
