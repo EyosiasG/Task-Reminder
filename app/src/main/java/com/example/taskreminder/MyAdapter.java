@@ -4,20 +4,26 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private Context context;
-    private ArrayList name_id, email_id, age_id;
 
-    public MyAdapter(Context context, ArrayList name_id, ArrayList date_id, ArrayList time_id) {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
+
+    private Context context;
+    private ArrayList name_id, category_id, email_id, age_id;
+
+    public MyAdapter(Context context, ArrayList name_id, ArrayList category_id, ArrayList date_id, ArrayList time_id) {
         this.context = context;
         this.name_id = name_id;
+        this.category_id = category_id;
         this.email_id = date_id;
         this.age_id = time_id;
     }
@@ -31,7 +37,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         holder.name_id.setText(String.valueOf(name_id.get(position)));
+        holder.category_id.setText(String.valueOf(category_id.get(position)));
         holder.email_id.setText(String.valueOf(email_id.get(position)));
         holder.age_id.setText(String.valueOf(age_id.get(position)));
     }
@@ -42,11 +50,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView name_id, email_id, age_id;
+        TextView name_id, email_id, age_id, category_id;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             name_id = itemView.findViewById(R.id.textname);
             email_id = itemView.findViewById(R.id.textdate);
+            category_id = itemView.findViewById(R.id.textcategory);
             age_id = itemView.findViewById(R.id.texttime);
 
         }

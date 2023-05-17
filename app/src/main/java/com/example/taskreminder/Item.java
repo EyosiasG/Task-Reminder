@@ -1,12 +1,18 @@
 package com.example.taskreminder;
 
+import android.widget.CheckBox;
+
 public class Item {
     String taskName;
+    String taskCategory;
+    String taskStartingDate;
     String taskStartingTime;
 
-    public Item(String taskName, String taskStartingTime) {
+    public Item(String taskName, String taskStartingTime, String taskCategory, String taskStartingDate) {
         this.taskName = taskName;
+        this.taskCategory = taskCategory;
         this.taskStartingTime = taskStartingTime;
+        this.taskStartingDate = taskStartingDate;
     }
 
     public String getTaskName() {

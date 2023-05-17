@@ -3,8 +3,10 @@ package com.example.taskreminder;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -18,7 +20,12 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -74,6 +81,7 @@ public class TabCreate extends Fragment {
     private   String name, date,category, startTime;
     int hour, minute;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +90,10 @@ public class TabCreate extends Fragment {
 
         db = new DBHelper(getContext());
 
+
         dateButton = root.findViewById(R.id.datePickerDialog);
+
+
         startTimeButton = root.findViewById(R.id.startTimeBtn);
 
         Spinner spinner = root.findViewById(R.id.spinner);
@@ -102,6 +113,16 @@ public class TabCreate extends Fragment {
         spinner.setAdapter(monthAdapter);
         am_pm_Button.setAdapter(am_pm_Adapter);
 
+        long millis = System.currentTimeMillis();
+        java.sql.Date mydate = new java.sql.Date(millis);
+        String dateInString = mydate.toString();
+        SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
+        try {
+            mydate = (java.sql.Date) formatter.parse(dateInString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(mydate.toString());
 
 
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +131,7 @@ public class TabCreate extends Fragment {
                 datePickerDialog.show();
             }
         });
-
+        java.sql.Date finalMydate = mydate;
         startTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +147,7 @@ public class TabCreate extends Fragment {
                 int style = AlertDialog.THEME_HOLO_DARK;
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), style, onTimeSetListener, hour, minute, true);
 
-                timePickerDialog.setTitle("Select Time");
+                timePickerDialog.setTitle(finalMydate.toString());
                 timePickerDialog.show();
             }
         });
@@ -137,9 +158,14 @@ public class TabCreate extends Fragment {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 name = editTextName.getText().toString();
                 category = spinner.getSelectedItem().toString();
-                date = dateButton.getText().toString();
+                try {
+                    date = todaysDate(dateButton.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 startTime = startTimeButton.getText().toString() +  " " + am_pm_Button.getSelectedItem().toString();
 
 
@@ -162,7 +188,6 @@ public class TabCreate extends Fragment {
                 }
             }
         });
-
         return root;
     }
 
@@ -198,37 +223,47 @@ public class TabCreate extends Fragment {
     }
 
     private String makeDateString(int day, int month, int year) {
-        return getMonthFormat(month) + " " + day + " " + year;
+        return day + " " + getMonthFormat(month) + " " + year;
     }
 
     private String getMonthFormat(int month) {
         if(month == 1)
-            return "JAN";
+            return "January";
         if(month == 2)
-            return "FEB";
+            return "February";
         if(month == 3)
-            return "MAR";
+            return "March";
         if(month == 4)
-            return "APR";
+            return "April";
         if(month == 5)
-            return "MAY";
+            return "May";
         if(month == 6)
-            return "JUN";
+            return "Jun";
         if(month == 7)
-            return "JUL";
+            return "July";
         if(month == 8)
-            return "AUG";
+            return "August";
         if(month == 9)
-            return "SEP";
+            return "September";
         if(month == 10)
-            return "OCT";
+            return "October";
         if(month == 11)
-            return "NOV";
+            return "November";
         if(month == 12)
-            return "DEC";
+            return "December";
 
-        return "JAN";
+        return "January";
 
+    }
+    public String todaysDate(String dateInString) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
+
+        Date date = formatter.parse(dateInString);
+        String pattern = "MM-dd-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String _date = simpleDateFormat.format(date);
+
+        return _date;
     }
 
 }
